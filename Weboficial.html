@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestiona tus inversiones con SAB</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <style>
+    body {
+      background-color: #0a0a23;
+      color: white;
+      font-family: 'Helvetica Neue', sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .hero {
+      background: url('mount.jpg') center/cover no-repeat;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 4rem;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .title span {
+      display: block;
+      font-size: 5rem;
+      color: white;
+    }
+
+    .subtitle {
+      margin-top: 20px;
+      font-size: 1.5rem;
+      color: #ccc;
+    }
+
+    .telegram-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #229ED9;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .telegram-button img {
+      width: 20px;
+      height: 20px;
+      filter: invert(1);
+    }
+
+    .telegram-button:hover {
+      background-color: #1b8bbd;
+      transform: scale(1.05);
+    }
+
+    .center-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+    .features {
+      background-image: url('graf.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      position: relative;
+      z-index: 1;
+    }
+
+    .features::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0; 
+      background-color: rgba(10, 10, 35, 0.78);
+      z-index: -1;
+    }
+
+    .features-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .feature-text, .feature-image {
+      flex: 1;
+      min-width: 320px;
+    }
+
+    .feature-text h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #5fff9b;
+      text-align: center;
+    }
+
+    .feature-text p {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .feature-item {
+      background: #1e1e40;
+      border-radius: 16px;
+      padding: 40px 25px;
+      flex: 1;
+      min-width: 260px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-item h3 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      color: #5fff9b;
+    }
+
+    .feature-item p {
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    .features-section h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #5fff9b;
+      text-align: center;
+    }
+
+    .features-section p {
+      font-size: 1.1rem;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+
+    .feature-item img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .benefits-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .benefits-list li {
+      background: #1e1e40;
+      border-left: 5px solid #5fff9b;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #ccc;
+      width: 80%;
+      max-width: 600px;
+      box-sizing: border-box;
+    }
+
+    .glass-box {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 30px;
+    }
+
+    .lightbox-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      cursor: zoom-out;
+    }
+
+    .lightbox-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    }
+
+    .image-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .zoom-hint {
+      position: absolute;
+      bottom: 5px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    .team-section {
+      background-image: url('red.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: #0a0a23;
+      padding: 80px 20px;
+      text-align: center;
+      color: white;
+      position: relative;
+      z-index: 1;
+    }
+
+    .team-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 50, 0.6);
+      z-index: -1;
+    }
+
+    .team-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      color: #5fff9b;
+    }
+
+    .team-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .team-member {
+      max-width: 180px;
+      text-align: center;
+    }
+
+    .team-member img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #5fff9b;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      margin-bottom: 15px;
+    }
+
+    .team-member h3 {
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .team-member p {
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+
+    .footer {
+      background-color: #000;
+      padding: 40px 20px;
+      text-align: center;
+      color: #888;
+    }
+
+    .footer-logo img {
+      height: 50px;
+      margin-bottom: 15px;
+    }
+
+    .footer-text {
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    /* ============================= */
+/* 📱 Responsividad General */
+/* ============================= */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 992px) {
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .title span {
+    font-size: 3rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .team-grid {
+    gap: 20px;
+  }
+}
+
+/* Móviles grandes */
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .title span {
+    font-size: 2.5rem;
+  }
+
+  .features-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-grid {
+    justify-content: center;
+  }
+
+  .feature-text h2 {
+    font-size: 2rem;
+  }
+
+  .feature-item {
+    padding: 20px 15px;
+  }
+
+  .benefits-list li {
+    width: 100%;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .logo span {
+    font-size: 1.2rem;
+  }
+
+  .hero {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .title span {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .telegram-button {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+
+  .team-member img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .team-member h3 {
+    font-size: 1rem;
+  }
+
+  .team-member p {
+    font-size: 0.85rem;
+  }
+
+  .footer-text {
+    font-size: 0.75rem;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="logo">
+      <img src="logo.png" alt="Logo">
+      <span>Criptomanzanas</span>
+  </header>
+
+  <main class="hero">
+    <h1 class="title">El futuro en la administración y balance de tus inversiones</h1>
+    <p class="subtitle">Obten SAB Gratis por tiempo limitado</p>
+    <a class="telegram-button" href="https://t.me/+DvrW-GOy2RFlMzNh" target="_blank">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg" alt="Telegram" />
+      Grupo en Telegram
+    </a>
+  </main>
+
+  <section class="features">
+    <div class="features-container">
+      <div class="feature-text">
+        <h2>Todo tu portafolio, en un solo lugar</h2>
+        <p class="glass-box">Desde el seguimiento de precios hasta el rendimiento de tus inversiones. Con SAB podés ver todo de forma clara, simple y ordenada.</p>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="image-wrapper">
+              <a href="gest-clr.jpg" class="lightbox-link">
+                <img src="gest-clr.jpg" alt="Gestión" />
+                <span class="zoom-hint">🔍Ampliar</span>
+              </a>
+            </div>
+            <h3>Gestión clara</h3>
+            <p>Visualizá el rendimiento de cada proyecto con precisión matemática.</p>
+          </div>
+
+          <div class="feature-item">
+            <div class="image-wrapper">
+              <a href="alerts-intg.jpg" class="lightbox-link">
+                <img src="alerts-intg.jpg" alt="Alerta" />
+                <span class="zoom-hint">🔍Ampliar</span>
+              </a>
+            </div>
+            <h3>Alertas inteligentes</h3>
+            <p>Recibí notificaciones cuando tus activos se desvíen de tu estrategia.</p>
+          </div>
+
+          <div class="feature-item">
+            <div class="image-wrapper">
+              <a href="ctrl.jpg" class="lightbox-link">
+                <img src="ctrl.jpg" alt="Estrategia" />
+                <span class="zoom-hint">🔍Ampliar</span>
+              </a>
+            </div>
+            <h3>Control estratégico</h3>
+            <p>Tomá decisiones informadas según tus propios porcentajes objetivos.</p>
+          </div>
+        </div>
+
+        <div class="features-section">
+          <h2 id="que-es-sab">¿Qué es SAB?</h2>
+          <p class="glass-box">Antes conocida como "la planilla de administración y balance", SAB evolucionó a una herramienta integral para inversores que quieren claridad, control y resultados.</p>
+
+          <h2>Beneficios clave</h2>
+          <ul class="benefits-list">
+            <li>✔ Visualización completa de tus activos en tiempo real</li>
+            <li>✔ Seguimiento de vestings, airdrops, compras OTC, rewards y más</li>
+            <li>✔ Lectura automática de precios desde CoinMarketCap</li>
+            <li>✔ Balance general e indicadores clave en un solo dashboard</li>
+          </ul>
+
+          <h2>¿Querés probar SAB gratis?</h2>
+          <p class="glass-box">Vamos a seleccionar aleatoriamente a 10 personas del grupo privado de Telegram para que accedan sin costo a la nueva versión. Unite y participá:</p>
+         <div class="center-button">
+  <a class="telegram-button" href="https://t.me/+DvrW-GOy2RFlMzNh" target="_blank">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg" alt="Telegram" />
+    Unirme al grupo
+  </a>
+</div>
+
+          <h2>Lo que dicen los primeros usuarios</h2>
+          <blockquote class="glass-box">
+            “Nunca había tenido tanta claridad sobre mis inversiones. SAB me ahorró horas de planillas cruzadas.”<br>
+            — Inversor privado, TPC
+          </blockquote>
+
+          <h2>Sobre CriptoManzanas</h2>
+          <p class="glass-box">Somos un equipo de inversores que desarrolló SAB para resolver un problema real: el caos de tener activos en diferentes plataformas. Creemos en la transparencia, el control y el crecimiento con sentido.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="team-section">
+    <h2>Integrantes del Proyecto</h2>
+    <div class="team-grid">
+      <div class="team-member">
+        <img src="San.jpeg" alt="Nombre 1">
+        <h3>Santiago Irastorza</h3>
+        <p>Co-Fundador & Creador del Sistema SAB</p>
+      </div>
+      <div class="team-member">
+        <img src="Nahue.jpeg" alt="Nombre 2">
+        <h3>Nahuel Mele</h3>
+        <p>Co-Fundador & Coordinador Estratégico</p>
+      </div>
+      <div class="team-member">
+        <img src="May.jpeg" alt="Nombre 3">
+        <h3>Mayro Toyo</h3>
+        <p>Director de Marketing</p>
+      </div>
+      <div class="team-member">
+        <img src="Luis.jpeg" alt="Nombre 4">
+        <h3>Luis Ayala</h3>
+        <p>Líder de Desarrollo y Automatización</p>
+      </div>
+      <div class="team-member">
+        <img src="Dani.jpeg" alt="Nombre 5">
+        <h3>Daniel Gomes</h3>
+        <p>Diseño grafico y operaciones</p>
+      </div>
+      <div class="team-member">
+        <img src="Amil.jpeg" alt="Nombre 6">
+        <h3>Amilcar Crosio</h3>
+        <p>Legales</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-logo">
+      <img src="logo.png" alt="Logo CriptoManzanas">
+    </div>
+    <p class="footer-text">2025 Cripto Manzanas. Todos los derechos reservados</p>
+  </footer>
+
+  <script>
+
+       ScrollReveal().reveal('section, h1, h2, h3, p, ul, li, button, a, .glass-box', {
+      distance: '40px',
+      duration: 1000,
+      easing: 'ease-in-out',
+      interval: 100,
+      origin: 'bottom',
+      opacity: 0,
+      reset: false
+    });
+
+    // Features (imagenes todas a la vez)
+    ScrollReveal().reveal('.feature-item img', {
+      distance: '40px',
+      duration: 1000,
+      easing: 'ease-in-out',
+      origin: 'bottom',
+      opacity: 0,
+      interval: 0
+    });
+
+    // Team members (imagenes todas a la vez)
+    ScrollReveal().reveal('.team-member img', {
+      distance: '40px',
+      duration: 1000,
+      easing: 'ease-in-out',
+      origin: 'bottom',
+      opacity: 0,
+      interval: 0
+    });
+
+    // Lightbox
+    document.querySelectorAll('.lightbox-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const src = this.getAttribute('href');
+        
+        const overlay = document.createElement('div');
+        overlay.classList.add('lightbox-overlay');
+
+        const img = document.createElement('img');
+        img.src = src;
+
+        overlay.appendChild(img);
+        document.body.appendChild(overlay);
+
+        overlay.addEventListener('click', function () {
+          document.body.removeChild(overlay);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+
